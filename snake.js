@@ -5,10 +5,12 @@ var cols = 20;
 var board;
 var context;
 
-//snake head
+//snake head position (5, 5)
+// ToDo: change the snake head position to the center of the board
 var snakeX = blockSize * 5;
 var snakeY = blockSize * 5;
 
+// snake is not moving initially
 var velocityX = 0;
 var velocityY = 0;
 
@@ -20,10 +22,15 @@ var foodY;
 var gameOver = false;
 
 var scoreValue = 0;
+var highestScore = 0;
 
 window.onload = function () {
   scoreElement = document.getElementById("score");
   scoreElement.innerHTML = "Score: " + scoreValue;
+
+  highestScoreElement = document.getElementById("highestScore");
+  highestScore = localStorage.getItem("highestScore") || 0;
+  highestScoreElement.innerHTML = "Highest Score: " + highestScore;
 
   board = document.getElementById("board");
   board.height = rows * blockSize;
@@ -32,19 +39,36 @@ window.onload = function () {
 
   placeFood();
   document.addEventListener("keyup", changeDirection);
-  // update();
   setInterval(update, 1000 / 10); //100 milliseconds
+
+  document.getElementById("restart").addEventListener("click", resetGame);
 };
+
+function resetGame() {
+  snakeX = blockSize * 5;
+  snakeY = blockSize * 5;
+  snakeBody = [];
+  velocityX = 0;
+  velocityY = 0;
+  scoreValue = 0;
+  scoreElement.innerHTML = "Score: " + scoreValue;
+  gameOver = false;
+}
 
 function update() {
   if (gameOver) {
+    if (scoreValue > highestScore) {
+      highestScore = scoreValue;
+      highestScoreElement.innerHTML = "Highest Score: " + highestScore;
+      localStorage.setItem("highestScore", highestScore);
+    }
     return;
   }
 
   context.fillStyle = "#707070";
   context.fillRect(0, 0, board.width, board.height);
 
-  context.fillStyle = "red";
+  context.fillStyle = "red"; // ToDo: change the color of the food to pink
   context.fillRect(foodX, foodY, blockSize, blockSize);
 
   if (snakeX == foodX && snakeY == foodY) {
@@ -89,6 +113,7 @@ function update() {
   }
 }
 
+//change Velocity to 0.5
 function changeDirection(e) {
   if (e.code == "ArrowUp" && velocityY != 1) {
     velocityX = 0;
