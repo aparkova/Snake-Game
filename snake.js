@@ -1,14 +1,14 @@
 //board
 var blockSize = 25;
-var rows = 20;
-var cols = 20;
+var rows = 30;
+var cols = 30;
 var board;
 var context;
 
 //snake head position (5, 5)
 // ToDo: change the snake head position to the center of the board
-var snakeX = blockSize * 5;
-var snakeY = blockSize * 5;
+var snakeX = blockSize * 7;
+var snakeY = blockSize * 13;
 
 // snake is not moving initially
 var velocityX = 0;
@@ -41,12 +41,16 @@ window.onload = function () {
   document.addEventListener("keyup", changeDirection);
   setInterval(update, 1000 / 10); //100 milliseconds
 
-  document.getElementById("restart").addEventListener("click", resetGame);
+  // To Do: get element by id 'restart' and add an event listener on click
+  document.getElementById("reset").addEventListener("click",resetGame)
+  scoreElement.innerHTML = "Score: " + scoreValue;
+
 };
 
+// set the snake to its initial state
 function resetGame() {
-  snakeX = blockSize * 5;
-  snakeY = blockSize * 5;
+   snakeX = blockSize * 7;
+   snakeY = blockSize * 13;
   snakeBody = [];
   velocityX = 0;
   velocityY = 0;
@@ -68,7 +72,7 @@ function update() {
   context.fillStyle = "#707070";
   context.fillRect(0, 0, board.width, board.height);
 
-  context.fillStyle = "red"; // ToDo: change the color of the food to pink
+  context.fillStyle = "pink"; // ToDo: change the color of the food to pink, find css color code
   context.fillRect(foodX, foodY, blockSize, blockSize);
 
   if (snakeX == foodX && snakeY == foodY) {
@@ -86,7 +90,7 @@ function update() {
     snakeBody[0] = [snakeX, snakeY];
   }
 
-  context.fillStyle = "lime";
+  context.fillStyle = "#8A2BE2";
   snakeX += velocityX * blockSize;
   snakeY += velocityY * blockSize;
   context.fillRect(snakeX, snakeY, blockSize, blockSize);
@@ -114,17 +118,18 @@ function update() {
 }
 
 //change Velocity to 0.5
+// change keys to KeyW, KeyS, KeyA, KeyD
 function changeDirection(e) {
-  if (e.code == "ArrowUp" && velocityY != 1) {
+  if (e.code == "KeyW" && velocityY != 1) {
     velocityX = 0;
     velocityY = -1;
-  } else if (e.code == "ArrowDown" && velocityY != -1) {
+  } else if (e.code == "KeyS" && velocityY != -1) {
     velocityX = 0;
     velocityY = 1;
-  } else if (e.code == "ArrowLeft" && velocityX != 1) {
+  } else if (e.code == "KeyA" && velocityX != 1) {
     velocityX = -1;
     velocityY = 0;
-  } else if (e.code == "ArrowRight" && velocityX != -1) {
+  } else if (e.code == "KeyD" && velocityX != -1) {
     velocityX = 1;
     velocityY = 0;
   }
@@ -132,6 +137,17 @@ function changeDirection(e) {
 
 function placeFood() {
   //(0-1) * cols -> (0-19.9999) -> (0-19) * 25
-  foodX = Math.floor(Math.random() * cols) * blockSize;
-  foodY = Math.floor(Math.random() * rows) * blockSize;
+  let posocc; 
+  do {
+    foodX = Math.floor(Math.random() * cols) * blockSize;
+    foodY = Math.floor(Math.random() * rows) * blockSize;
+    posocc=false
+    for (let i=0;i<snakeBody.length;i++){
+      if(snakeBody[i][0]===foodX && snakeBody[i][1]===foodY){
+        posocc=true;
+        break
+      }
+    }
+  } while (posocc)
+  
 }

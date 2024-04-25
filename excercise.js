@@ -8,18 +8,18 @@ let z = x + y;
 
 console.log(z);
 
-// multiply, divide, add, subtract
+// // multiply, divide, add, subtract
 console.log(x * y);
 console.log(x / y);
 console.log(x + y);
 console.log(x - y);
 
-// How to use arrays:
-var array = [1, 2, 3, 4, 5];
+// // How to use arrays:
+var array = ['Apple', 'Cucumber', 'Pear'];
 console.log(array[0]);
-console.log(array[1]);
+// console.log(array[1]);
 
-// How to use conditionals:
+// // How to use conditionals:
 let a = 5;
 let b = 6;
 if (a > b) {
@@ -28,17 +28,18 @@ if (a > b) {
     console.log("b is greater than a");
   }
 
-// How to use loops:
+// // How to use loops:
 for (let i = 0; i < array.length; i++) {
-  console.log(array[i]);
+  console.log('Array length', array.length)
+  console.log('I am here',array[i]);
 }
 
-// How to use functions:
-function add(a, b) {
-  return a + b;
-}
+// // How to use functions:
+// function add(a, b) {
+//   return a + b;
+// }
 
-console.log(add(1, 2));
+// console.log(add(1, 2));
 
 
 
